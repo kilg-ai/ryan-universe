@@ -18,3 +18,5 @@ npm run dev
 Netlify: set base directory to this folder (`web/` if this lives in the workspace repo). `netlify.toml` is ready. Do not attach a custom domain until DNS is explicitly approved.
 
 ChatGPT Sites (`*.chatgpt.site`) is a dead path. Leave it stale.
+
+Codex share log (this repo, no secrets): [CODEX.md](./CODEX.md)
