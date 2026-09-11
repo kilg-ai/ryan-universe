@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-09-11T23:27:17.304Z",
-  "release": "Release authorized · in progress",
+  "updatedAt": "2026-09-11T23:36:26.929Z",
+  "release": "Live release verified · operator fit next",
   "contact": "ron.kilgore@gmail.com",
   "tasks": [
     {
@@ -16,32 +16,32 @@
     {
       "id": "02",
       "title": "Give every inquiry a clear next step",
-      "status": "ready",
+      "status": "complete",
       "lane": "Daily operation",
       "owner": "Codex",
       "result": "Owner, calendar evidence, reply state and next action are visible together.",
-      "proof": "Local build and regression checks passed.",
-      "next": "Publish the tested desk interface."
+      "proof": "Authenticated live desk HTML verified: owner, notification state and next action visible.",
+      "next": "Ryan and Ron confirm the desk is clear in daily use."
     },
     {
       "id": "03",
       "title": "Remove test noise from daily work",
-      "status": "ready",
+      "status": "complete",
       "lane": "Daily operation",
       "owner": "Codex",
       "result": "Explicitly labeled proof inquiries are excluded from the daily display, without deleting their records.",
-      "proof": "Fixture filtering regression check passed.",
-      "next": "Verify customer-only display after release."
+      "proof": "Live endpoint now returns one customer inquiry; four explicit test proofs are excluded from the daily display.",
+      "next": "Keep proof records separate from operator attention."
     },
     {
       "id": "04",
       "title": "Make contracts and follow-ups reviewable",
-      "status": "ready",
+      "status": "complete",
       "lane": "Daily operation",
       "owner": "Codex",
       "result": "Versioned drafts, review owners and dates; an internal review keeps the work held.",
-      "proof": "Local browser save/review checks passed.",
-      "next": "Verify the workflow in the released interface."
+      "proof": "Review interface published. Local browser interactions and real shared-record readback passed.",
+      "next": "Complete the signed-in operator fit check; review is not approval to send or sign."
     },
     {
       "id": "05",
@@ -56,22 +56,22 @@
     {
       "id": "06",
       "title": "Release the working desk",
-      "status": "active",
+      "status": "complete",
       "lane": "Release",
       "owner": "Codex",
-      "result": "Release authorized. UI and function updates are prepared.",
-      "proof": "Release authorized; browser verification follows publication. The server-side display update remains a separate release step.",
-      "next": "Publish available UI changes; finish the function release when access resumes."
+      "result": "Control Tower UI and booking-desk function released on the existing hosts.",
+      "proof": "Public UI asset verified; authenticated desk returned 200 and unauthorized access returned 401.",
+      "next": "Keep worker, customer sending and calendar writes under separate decisions."
     },
     {
       "id": "07",
       "title": "Publish this public work map",
-      "status": "active",
+      "status": "complete",
       "lane": "Portfolio",
       "owner": "Codex",
-      "result": "A public case study explains the goal, delivery model, evidence and remaining work.",
-      "proof": "Implementation in progress.",
-      "next": "Verify the public URL and hiring contact."
+      "result": "Public portfolio work map is live, including Ron’s hiring contact.",
+      "proof": "Live URL, task filtering and expandable evidence checked in Chrome.",
+      "next": "Use the link in relevant job or client conversations; update the snapshot when work changes."
     },
     {
       "id": "08",
