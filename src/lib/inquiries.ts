@@ -68,10 +68,40 @@ export function propertyList(value:unknown):string[]{
  if(!Array.isArray(value)||value.length>6||value.some(p=>typeof p!=='string'||!(propertyKeys as readonly string[]).includes(p)))throw new Error('Choose only named Universe properties.');
  return [...new Set(value as string[])];
 }
-export function ryanDateStatus(i:Inquiry):'booked'|'not booked'|'not checked'{
- const c=i.calendar_checks.find(x=>x.current)||i.calendar_checks[0];
- if(!c)return 'not checked';
- return c.evidence.calendars.some(cal=>(cal.busy_intervals||[]).length>0)?'booked':'not booked';
+export type DateCheck={status:'booked'|'not booked'|'not checked'|'unknown';reason:string;lastObservation:string|null};
+export function ryanDateCheck(i:Inquiry,now=Date.now()):DateCheck{
+ const current=i.calendar_checks.find(x=>x.current===true);
+ const lastObservation=current?.evidence?.checked_at||i.calendar_checks[0]?.evidence?.checked_at||null;
+ if(!current)return {status:'not checked',reason:i.calendar_checks.length?'No current calendar check':'No calendar check recorded',lastObservation};
+ if(current.facts_revision!==i.facts_revision)return {status:'unknown',reason:'Event facts changed since the last check',lastObservation};
+ if(current.fresh!==true)return {status:'unknown',reason:'Calendar evidence is not fresh',lastObservation};
+ const age=now-Date.parse(current.evidence.checked_at);
+ if(!Number.isFinite(age)||age<-60000||age>600000)return {status:'unknown',reason:'Calendar evidence is stale',lastObservation};
+ if(!i.facts.timezone_confirmed||!i.facts.event_timezone)return {status:'unknown',reason:'Timezone not confirmed',lastObservation};
+ try{new Intl.DateTimeFormat('en-US',{timeZone:i.facts.event_timezone});}catch{return {status:'unknown',reason:'Event timezone is not a supported IANA zone',lastObservation};}
+ const start=Date.parse(i.facts.start_utc||''),end=Date.parse(i.facts.end_utc||'');
+ if(!Number.isFinite(start)||!Number.isFinite(end)||end<=start)return {status:'unknown',reason:'Timezone-supported UTC bounds are missing',lastObservation};
+ const ryan=current.evidence.calendars.find(cal=>cal.calendar_id===bookingAccount&&cal.account_id===bookingAccount);
+ if(!ryan)return {status:'unknown',reason:'Ryan TheOne calendar was not queried',lastObservation};
+ if(ryan.query_complete!==true)return {status:'unknown',reason:'Calendar query was incomplete',lastObservation};
+ const winStart=Date.parse(ryan.window_start_utc),winEnd=Date.parse(ryan.window_end_utc);
+ if(!Number.isFinite(winStart)||!Number.isFinite(winEnd)||winStart>start||winEnd<end)return {status:'unknown',reason:'Checked window does not cover the event',lastObservation};
+ if(!Array.isArray(ryan.busy_intervals))return {status:'unknown',reason:'Busy intervals missing',lastObservation};
+ const intervals=ryan.busy_intervals.map(b=>[Date.parse(b.start_utc),Date.parse(b.end_utc)]);
+ if(intervals.some(([s,e])=>!Number.isFinite(s)||!Number.isFinite(e)||e<=s))return {status:'unknown',reason:'Invalid busy interval',lastObservation};
+ const busy=intervals.some(([s,e])=>s<end&&e>start);
+ return {status:busy?'booked':'not booked',reason:busy?'Busy interval on Ryan TheOne':'No busy interval on Ryan TheOne',lastObservation};
+}
+export function ryanDateStatus(i:Inquiry,now=Date.now()):string{
+ const d=ryanDateCheck(i,now);
+ if(d.status==='booked'||d.status==='not booked')return d.status;
+ const observed=d.lastObservation?' · last observed '+d.lastObservation:'';
+ return d.status==='not checked'&&!d.lastObservation?'not checked':d.status+' · '+d.reason+observed;
+}
+export function replyLabel(i:Inquiry):'sent by human'|'reply held'|'needs reply'{
+ if(i.source?.prior_response)return 'sent by human';
+ if(i.reply_drafts?.length)return 'reply held';
+ return 'needs reply';
 }
 export function calendarLabel(i:Inquiry,now=Date.now()){
  const c=i.calendar_checks[0];if(!c)return 'Not checked';

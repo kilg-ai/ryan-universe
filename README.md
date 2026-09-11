@@ -1,22 +1,13 @@
-# Ryan the 1 Universe — Control Tower
+# Ryan the 1 Universe
 
-Hosted Control Tower for the Ryan the 1 Universe. **Not a ChatGPT Site.**
+Control Tower: https://kilg-ai.github.io/ryan-universe/
 
-**Live:** https://kilg-ai.github.io/ryan-universe/
+Public portfolio work map: https://kilg-ai.github.io/ryan-universe/work-map/
 
-- Source: GitHub `kilg-ai/ryan-universe`
-- Public hub stays `ryanthe1.com` (do not replace)
-- Live booking inbox: dedicated Ryan Supabase desk (`booking-intake`)
-- Operator access: open from the existing private desk link (`?k=`). Do not paste tokens into git or chat.
-- Workspace records save in this browser until Netlify/GitHub is the daily host.
+The public work map explains Ron Kilgore's AI-assisted operations work using a maintained, public-safe project snapshot. Update public/work-map/status.json when evidence or release state changes. It is not a live feed of private customer data or agent activity.
 
-```bash
-npm install
-npm run dev
-```
+The Control Tower loads shared records and inquiries with an existing private operator link. Never commit or publicly share that link or its credential. Held contract/follow-up drafts use the existing workspace API. Internal review does not send, sign, charge or reserve.
 
-Netlify: set base directory to this folder (`web/` if this lives in the workspace repo). `netlify.toml` is ready. Do not attach a custom domain until DNS is explicitly approved.
+Development: npm install; npm run dev. Production build for GitHub Pages: set BASE_PATH=/ryan-universe/ and run npm run build. Deploy dist to the gh-pages branch. Default local build uses /.
 
-ChatGPT Sites (`*.chatgpt.site`) is a dead path. Leave it stale.
-
-Codex share log (this repo, no secrets): [CODEX.md](./CODEX.md)
+Customer send, calendar writes and worker activation remain separate decisions.

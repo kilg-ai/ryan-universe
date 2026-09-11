@@ -1,4 +1,5 @@
-import { replyLabel, ryanDateStatus, type Inquiry } from './inquiries.ts';
+import { deskPresentation } from './desk-presentation.ts';
+﻿import { replyLabel, ryanDateStatus, type Inquiry } from './inquiries.ts';
 export const properties = [
   {id:'RyanThe1',name:'RyanThe1',label:'The public hub',mark:'R1',color:'#c1ef77',description:'Identity, events, bookings and the work that brings everything together.',tracks:['Events & bookings','Public website','Client relationships']},
   {id:'YouTube',name:'YouTube',label:'The main platform',mark:'YT',color:'#ff8585',description:'Programming, videos, Shorts, performance and the next audience opportunity.',tracks:['Videos & Shorts','Production pipeline','Growth & monetization']},
@@ -11,7 +12,7 @@ export type PropertyId = typeof properties[number]['id'];
 export type Status = 'Needs review'|'In progress'|'Planned'|'Done';
 export type Kind = 'event'|'video'|'submission'|'task'|'media'|'opportunity'|'idea';
 export type RecordItem = {id:string;title:string;kind:Kind;properties:PropertyId[];status:Status;owner:string;due:string;note:string;sourceId?:string;provenance:'Demo'|'User supplied';priority:'High'|'Normal';detail:string;revision?:number;importNativeId?:string};
-export type Answer = {values:Record<string,string>;savedAt:string;status:'Details saved · Not verified';revision?:number};
+export type Answer = {values:Record<string,string>;savedAt:string;status:'Details saved · Not verified'|'Details saved · Verified';revision?:number};
 export type State = {records:RecordItem[];answers:Record<string,Answer>;activity:{id:string;text:string;at:string}[]};
 export type Field = {key:string;label:string;placeholder?:string;defaultValue?:string;type?:'text'|'url'|'textarea';required?:boolean};
 export const prompts: {id:string;title:string;question:string;description:string;property?:PropertyId;fields:Field[];link?:{label:string;url:string}}[] = [
@@ -58,7 +59,7 @@ export function todayInquiryLine(i:Inquiry):BriefingItem{
  const keys=i.property_keys.filter((k):k is PropertyId=>properties.some(p=>p.id===k));
  const propertiesForLine:PropertyId[]=keys.length?keys:['RyanThe1'];
  const slot=[f.local_start,f.local_end].filter(Boolean).join('–')||'time TBD';
- return {id:'brief-inq-'+i.id,recordId:i.id,view:'inbox',headline:f.title+(f.local_date?' · '+weekday(f.local_date):''),detail:[f.venue||'Venue TBD',slot,'Ryan TheOne '+ryanDateStatus(i),replyLabel(i)].join(' · '),properties:propertiesForLine,provenance:'User supplied'};
+ return {id:'brief-inq-'+i.id,recordId:i.id,view:'inbox',headline:f.title+(f.local_date?' · '+weekday(f.local_date):''),detail:[f.venue||'Venue TBD',slot,'Ryan TheOne '+ryanDateStatus(i),replyLabel(i),deskPresentation(i,ryanDateStatus(i)).next].join(' · '),properties:propertiesForLine,provenance:'User supplied'};
 }
 function normBriefText(value:string){
  return value.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -126,4 +127,3 @@ export function applyCommand(current:State,input:Command,now=new Date().toISOStr
  }else throw new Error('Unsupported action.');
  state.activity.unshift({id:crypto.randomUUID(),text:message,at:now});state.activity=state.activity.slice(0,80);return state;
 }
-
