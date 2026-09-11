@@ -1,0 +1,99 @@
+{
+  "updatedAt": "2026-09-11T23:27:17.304Z",
+  "release": "Release authorized · in progress",
+  "contact": "ron.kilgore@gmail.com",
+  "tasks": [
+    {
+      "id": "01",
+      "title": "Build a reliable inquiry intake",
+      "status": "complete",
+      "lane": "Foundation",
+      "owner": "Delivery",
+      "result": "Website inquiries reach a dedicated desk with a held reply.",
+      "proof": "Live intake and existing inquiry verified.",
+      "next": "Keep the manual review path operational."
+    },
+    {
+      "id": "02",
+      "title": "Give every inquiry a clear next step",
+      "status": "ready",
+      "lane": "Daily operation",
+      "owner": "Codex",
+      "result": "Owner, calendar evidence, reply state and next action are visible together.",
+      "proof": "Local build and regression checks passed.",
+      "next": "Publish the tested desk interface."
+    },
+    {
+      "id": "03",
+      "title": "Remove test noise from daily work",
+      "status": "ready",
+      "lane": "Daily operation",
+      "owner": "Codex",
+      "result": "Explicitly labeled proof inquiries are excluded from the daily display, without deleting their records.",
+      "proof": "Fixture filtering regression check passed.",
+      "next": "Verify customer-only display after release."
+    },
+    {
+      "id": "04",
+      "title": "Make contracts and follow-ups reviewable",
+      "status": "ready",
+      "lane": "Daily operation",
+      "owner": "Codex",
+      "result": "Versioned drafts, review owners and dates; an internal review keeps the work held.",
+      "proof": "Local browser save/review checks passed.",
+      "next": "Verify the workflow in the released interface."
+    },
+    {
+      "id": "05",
+      "title": "Prove a real held brief survives a save",
+      "status": "complete",
+      "lane": "Verification",
+      "owner": "Codex",
+      "result": "One real internal brief was saved and read back with exact text and held state.",
+      "proof": "Authenticated shared-workspace readback verified September 11, 2026.",
+      "next": "Ron reviews the brief before any terms are proposed."
+    },
+    {
+      "id": "06",
+      "title": "Release the working desk",
+      "status": "active",
+      "lane": "Release",
+      "owner": "Codex",
+      "result": "Release authorized. UI and function updates are prepared.",
+      "proof": "Release authorized; browser verification follows publication. The server-side display update remains a separate release step.",
+      "next": "Publish available UI changes; finish the function release when access resumes."
+    },
+    {
+      "id": "07",
+      "title": "Publish this public work map",
+      "status": "active",
+      "lane": "Portfolio",
+      "owner": "Codex",
+      "result": "A public case study explains the goal, delivery model, evidence and remaining work.",
+      "proof": "Implementation in progress.",
+      "next": "Verify the public URL and hiring contact."
+    },
+    {
+      "id": "08",
+      "title": "Confirm daily fit with Ryan and Ron",
+      "status": "open",
+      "lane": "Verification",
+      "owner": "Ron + Ryan",
+      "result": "An operator should know what needs attention without reading agent logs.",
+      "proof": "Final operator acceptance is still open.",
+      "next": "Use the released desk for a real review and record what is missing."
+    },
+    {
+      "id": "09",
+      "title": "Choose outbound and provider policies",
+      "status": "held",
+      "lane": "Separate decisions",
+      "owner": "Ron",
+      "result": "Worker activation, customer sending and calendar writing stay independent decisions.",
+      "proof": "All three action gates remain closed.",
+      "next": "Authorize only the capability needed for the next business outcome."
+    }
+  ],
+  "tests": 31,
+  "sourceNote": "Maintained project snapshot. Completed means the stated result is supported by evidence; it does not mean the whole product is finished."
+}
