@@ -1,4 +1,4 @@
-import { ryanDateStatus, type Inquiry } from './inquiries.ts';
+import { replyLabel, ryanDateStatus, type Inquiry } from './inquiries.ts';
 export const properties = [
   {id:'RyanThe1',name:'RyanThe1',label:'The public hub',mark:'R1',color:'#c1ef77',description:'Identity, events, bookings and the work that brings everything together.',tracks:['Events & bookings','Public website','Client relationships']},
   {id:'YouTube',name:'YouTube',label:'The main platform',mark:'YT',color:'#ff8585',description:'Programming, videos, Shorts, performance and the next audience opportunity.',tracks:['Videos & Shorts','Production pipeline','Growth & monetization']},
@@ -10,8 +10,8 @@ export const properties = [
 export type PropertyId = typeof properties[number]['id'];
 export type Status = 'Needs review'|'In progress'|'Planned'|'Done';
 export type Kind = 'event'|'video'|'submission'|'task'|'media'|'opportunity'|'idea';
-export type RecordItem = {id:string;title:string;kind:Kind;properties:PropertyId[];status:Status;owner:string;due:string;note:string;sourceId?:string;provenance:'Demo'|'User supplied';priority:'High'|'Normal';detail:string};
-export type Answer = {values:Record<string,string>;savedAt:string;status:'Details saved · Not verified'};
+export type RecordItem = {id:string;title:string;kind:Kind;properties:PropertyId[];status:Status;owner:string;due:string;note:string;sourceId?:string;provenance:'Demo'|'User supplied';priority:'High'|'Normal';detail:string;revision?:number;importNativeId?:string};
+export type Answer = {values:Record<string,string>;savedAt:string;status:'Details saved · Not verified';revision?:number};
 export type State = {records:RecordItem[];answers:Record<string,Answer>;activity:{id:string;text:string;at:string}[]};
 export type Field = {key:string;label:string;placeholder?:string;defaultValue?:string;type?:'text'|'url'|'textarea';required?:boolean};
 export const prompts: {id:string;title:string;question:string;description:string;property?:PropertyId;fields:Field[];link?:{label:string;url:string}}[] = [
@@ -26,6 +26,10 @@ export const prompts: {id:string;title:string;question:string;description:string
  {id:'supabase',title:'Shared backend',question:'Which Supabase project should become the live home?',description:'The preview saves your answers privately. The future operational backend remains Supabase; no connection is made by this form. Recommended: a dedicated Ryan the 1 organization with an authorized adult owner and separate eligible personal logins. Keep the existing website repository in place during testing.',fields:[{key:'project',label:'Existing project name, or “new project needed”',required:true},{key:'owner',label:'Adult owner account / email',required:true},{key:'github',label:'Existing GitHub repository URL or owner/repository',placeholder:'Keep the current repository for testing'},{key:'ryan',label:'Ryan’s separate login / planned role',placeholder:'User supplied; eligibility and permissions to review'},{key:'region',label:'Region preference or “review needed”',required:true},{key:'budget',label:'Approved monthly budget or “not approved”',required:true},{key:'reviewer',label:'Connection and access reviewer',required:true}],link:{label:'Open Supabase dashboard',url:'https://supabase.com/dashboard'}},
  {id:'review',title:'Review the live handoff',question:'What should be verified and connected first?',description:'Save the requested scope. Accounts, permissions, recovery and any real transactions still require observed verification.',fields:[{key:'outcome',label:'First connection and allowed actions',type:'textarea',required:true},{key:'owner',label:'Review owner',required:true},{key:'next',label:'Next review checkpoint',placeholder:'Date or what must happen first',required:true}]},
 ];
+export function setupValues(id:string,answer?:Record<string,string>):Record<string,string>{
+ const p=prompts.find(x=>x.id===id);if(!p)throw new Error('Unknown setup step.');
+ return Object.fromEntries(p.fields.map(f=>[f.key,answer?.[f.key]??f.defaultValue??'']));
+}
 export const statuses:Status[]=['Needs review','In progress','Planned','Done'];
 const record=(id:string,title:string,kind:Kind,props:PropertyId[],detail:string,status:Status='Needs review',priority:'High'|'Normal'='Normal'):RecordItem=>({id,title,kind,properties:props,status,priority,detail,owner:'Ronald',due:'',note:'',provenance:'Demo'});
 export function initialState():State { return {answers:{},activity:[],records:[
@@ -54,15 +58,32 @@ export function todayInquiryLine(i:Inquiry):BriefingItem{
  const keys=i.property_keys.filter((k):k is PropertyId=>properties.some(p=>p.id===k));
  const propertiesForLine:PropertyId[]=keys.length?keys:['RyanThe1'];
  const slot=[f.local_start,f.local_end].filter(Boolean).join('–')||'time TBD';
- const reply=i.reply_drafts.length?'reply held':'needs reply';
- return {id:'brief-inq-'+i.id,recordId:i.id,view:'inbox',headline:f.title+(f.local_date?' · '+weekday(f.local_date):''),detail:[f.venue||'Venue TBD',slot,'Ryan TheOne '+ryanDateStatus(i),reply].join(' · '),properties:propertiesForLine,provenance:'User supplied'};
+ return {id:'brief-inq-'+i.id,recordId:i.id,view:'inbox',headline:f.title+(f.local_date?' · '+weekday(f.local_date):''),detail:[f.venue||'Venue TBD',slot,'Ryan TheOne '+ryanDateStatus(i),replyLabel(i)].join(' · '),properties:propertiesForLine,provenance:'User supplied'};
+}
+function normBriefText(value:string){
+ return value.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+}
+/** True when a workspace event is the same booking already represented by an inquiry line. */
+export function eventCoveredByInquiry(r:RecordItem,inquiries:Inquiry[]):boolean{
+ if(r.kind!=='event'||!inquiries.length)return false;
+ if(r.sourceId&&inquiries.some(i=>i.id===r.sourceId))return true;
+ const recordTitle=normBriefText(r.title);
+ if(!recordTitle)return false;
+ return inquiries.some(i=>{
+  const title=normBriefText(i.facts.title||'');
+  const contact=normBriefText(i.facts.contact_name||'');
+  if(title&&(recordTitle===title||recordTitle.includes(title)||title.includes(recordTitle)))return true;
+  if(contact&&contact.split(' ').filter(Boolean).length>=1&&recordTitle.includes(contact))return true;
+  return false;
+ });
 }
 export function todayBriefing(records:RecordItem[],inquiries:Inquiry[]=[]):BriefingItem[]{
  const items:BriefingItem[]=inquiries.map(todayInquiryLine);
  const hideDemoEvents=inquiries.length>0;
  const open=records.filter(r=>r.status!=='Done'&&!(hideDemoEvents&&r.provenance==='Demo'&&r.kind==='event'));
  const line=(r:RecordItem,headline:string,detail:string,view?:string):BriefingItem=>({id:'brief-'+r.id,recordId:r.id,view:view||(r.properties.includes('YouTube')&&r.kind==='video'?'YouTube':r.properties[0]||'today'),headline,detail,properties:r.properties,provenance:r.provenance});
- for(const r of open.filter(r=>r.kind==='event'))items.push(line(r,r.title+(r.due?' · '+weekday(r.due):''),r.detail,r.properties[0]||'today'));
+ // Inquiry evidence wins: do not also show a copied/linked event for the same booking.
+ for(const r of open.filter(r=>r.kind==='event'&&!eventCoveredByInquiry(r,inquiries)))items.push(line(r,r.title+(r.due?' · '+weekday(r.due):''),r.detail,r.properties[0]||'today'));
  for(const r of open.filter(r=>r.kind==='video'&&r.priority==='High'))items.push(line(r,r.title,r.detail,'YouTube'));
  const artists=open.filter(r=>r.kind==='submission'&&r.properties.includes('19U'));
  if(artists.length)items.push(line(artists[0],artists.length+' 19U artist '+(artists.length===1?'submission':'submissions')+' need review','Same records. No duplicate artist rows. Review before programming or publishing.','19U'));
