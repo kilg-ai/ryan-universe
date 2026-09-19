@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T01:33:45.2373413Z",
+  "updatedAt": "2026-09-19T13:13:09.7061723Z",
   "updatedAtMeaning": "Last intentional publish of this snapshot (not page-load time).",
   "release": "Desk released; current review action clarified; operator acceptance remains open",
   "contact": "ron.kilgore@gmail.com",
@@ -112,6 +112,28 @@
       "result": "Worker activation, customer sending and calendar writing stay independent decisions.",
       "proof": "All three action gates remain closed.",
       "next": "Authorize only the capability needed for the next business outcome."
+    },
+    {
+      "id": "10",
+      "title": "Verify the retained backup can restore",
+      "status": "complete",
+      "lane": "Recovery",
+      "owner": "Codex",
+      "completedAt": "2026-09-19",
+      "result": "Historical export restored exactly: 73 rows across 15 tables, with 18 relationship checks.",
+      "proof": "17 file hashes verified; isolated PostgreSQL-compatible restore passed. This is not a current full backup or clean-host recovery.",
+      "next": "Create and restore a current full backup before declaring production recovery complete."
+    },
+    {
+      "id": "11",
+      "title": "Verify booking and readiness integrity deployment",
+      "status": "active",
+      "lane": "Operational validation",
+      "owner": "Codex",
+      "completedAt": null,
+      "result": "Local integrity tests and production preflight completed; database transaction submitted.",
+      "proof": "Submission was interrupted before result readback. Outcome unverified; do not rerun blindly.",
+      "next": "Read back database constraints, then verify concurrent booking protection with independent PostgreSQL sessions."
     }
   ],
   "tests": 35,
