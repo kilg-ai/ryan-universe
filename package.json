@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit -p tsconfig.app.json && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync:work-map": "node scripts/sync-work-map.mjs",
+    "prebuild": "npm run sync:work-map"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",
