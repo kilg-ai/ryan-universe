@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {inquiryAction} from './inquiry-action.ts';
+import {makeHeld} from './held-work.ts';
+import {blankFacts,type Inquiry} from './inquiries.ts';
+import {todayBriefing,type RecordItem} from './model.ts';
+const i={id:'inquiry',facts_revision:2,facts:{...blankFacts,title:'Example'},property_keys:['RyanThe1'],source:{prior_response:{}},calendar_checks:[],reply_drafts:[],reply_reviews:[]} as unknown as Inquiry;
+const packet=makeHeld(i,'follow-up',2,{owner:'Ron',due:'2026-09-19',body:'Ask only unresolved details.',suppressed:false,contactReviewed:true});
+const record=(p=packet)=>({id:'held',note:JSON.stringify(p),kind:'task',properties:['RyanThe1'],status:'Planned'} as RecordItem);
+test('current follow-up replaces obsolete check-conversation instruction in inbox and Today',()=>{const records=[record()];assert.match(inquiryAction(i,records),/review follow-up v2/);assert.match(todayBriefing(records,[i])[0].detail,/review follow-up v2/);});
+test('changed facts block current review instruction',()=>assert.match(inquiryAction({...i,facts_revision:3},[record()]),/revise/));
+test('latest version wins and suppression has priority',()=>{assert.match(inquiryAction(i,[record(),record({...packet,version:3,suppressed:true})]),/restriction/);});
+test('reviewed remains held; missing packet falls back to existing conversation',()=>{assert.match(inquiryAction(i,[record({...packet,state:'reviewed-held'})]),/still held/);assert.match(inquiryAction(i,[]),/existing conversation/);});

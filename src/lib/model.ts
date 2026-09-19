@@ -1,4 +1,4 @@
-import { deskPresentation } from './desk-presentation.ts';
+import { inquiryAction } from './inquiry-action.ts';
 ﻿import { replyLabel, ryanDateStatus, type Inquiry } from './inquiries.ts';
 export const properties = [
   {id:'RyanThe1',name:'RyanThe1',label:'The public hub',mark:'R1',color:'#c1ef77',description:'Identity, events, bookings and the work that brings everything together.',tracks:['Events & bookings','Public website','Client relationships']},
@@ -54,12 +54,12 @@ function weekday(due:string){
  const day=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date(due+'T12:00:00Z').getUTCDay()];
  return day+' '+due;
 }
-export function todayInquiryLine(i:Inquiry):BriefingItem{
+export function todayInquiryLine(i:Inquiry,records:RecordItem[]=[]):BriefingItem{
  const f=i.facts;
  const keys=i.property_keys.filter((k):k is PropertyId=>properties.some(p=>p.id===k));
  const propertiesForLine:PropertyId[]=keys.length?keys:['RyanThe1'];
  const slot=[f.local_start,f.local_end].filter(Boolean).join('–')||'time TBD';
- return {id:'brief-inq-'+i.id,recordId:i.id,view:'inbox',headline:f.title+(f.local_date?' · '+weekday(f.local_date):''),detail:[f.venue||'Venue TBD',slot,'Ryan TheOne '+ryanDateStatus(i),replyLabel(i),deskPresentation(i,ryanDateStatus(i)).next].join(' · '),properties:propertiesForLine,provenance:'User supplied'};
+ return {id:'brief-inq-'+i.id,recordId:i.id,view:'inbox',headline:f.title+(f.local_date?' · '+weekday(f.local_date):''),detail:[f.venue||'Venue TBD',slot,'Ryan TheOne '+ryanDateStatus(i),replyLabel(i),inquiryAction(i,records)].join(' · '),properties:propertiesForLine,provenance:'User supplied'};
 }
 function normBriefText(value:string){
  return value.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
@@ -79,7 +79,7 @@ export function eventCoveredByInquiry(r:RecordItem,inquiries:Inquiry[]):boolean{
  });
 }
 export function todayBriefing(records:RecordItem[],inquiries:Inquiry[]=[]):BriefingItem[]{
- const items:BriefingItem[]=inquiries.map(todayInquiryLine);
+ const items:BriefingItem[]=inquiries.map(i=>todayInquiryLine(i,records));
  const hideDemoEvents=inquiries.length>0;
  const open=records.filter(r=>r.status!=='Done'&&!(hideDemoEvents&&r.provenance==='Demo'&&r.kind==='event'));
  const line=(r:RecordItem,headline:string,detail:string,view?:string):BriefingItem=>({id:'brief-'+r.id,recordId:r.id,view:view||(r.properties.includes('YouTube')&&r.kind==='video'?'YouTube':r.properties[0]||'today'),headline,detail,properties:r.properties,provenance:r.provenance});

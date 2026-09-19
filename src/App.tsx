@@ -1,4 +1,5 @@
 import { HeldWork, type HeldSave } from './HeldWork';
+import { inquiryAction } from './lib/inquiry-action.ts';
 import { heldFor, makeHeld, heldPayload, heldStatus, readHeld, reviewHeld, type HeldPacket } from './lib/held-work';
 import { deskPresentation } from './lib/desk-presentation.ts';
 import { FormEvent, useEffect, useState } from 'react';
@@ -538,10 +539,11 @@ function Inbox({ records, sharedAvailable, onSaveHeld, onReviewHeld, inquiries, 
               <span className="pill">{ryanDateStatus(i)}</span>
             </div>
             <p>{i.facts.local_date || 'date TBD'} · {i.facts.local_start || 'time TBD'}–{i.facts.local_end || 'end TBD'} · {i.facts.event_timezone || 'timezone unconfirmed'} · {i.facts.venue || 'venue TBD'}</p>
-            <dl className="desk-summary"><dt>Owner</dt><dd>{summary.owner}</dd><dt>Calendar assessment</dt><dd>{ryanDateStatus(i)}</dd><dt>Held reply</dt><dd>{summary.reply}</dd><dt>Notifications</dt><dd>{summary.notification}</dd><dt>Next action</dt><dd><strong>{summary.next}</strong></dd></dl>
+            <section className="inbox-next" aria-label="Next action"><span className="eyebrow">NEXT ACTION</span><h3>{inquiryAction(i, records)}</h3><p>Review work is below. The date is not reserved.</p></section>
+            <dl className="desk-summary"><dt>Owner</dt><dd>{summary.owner}</dd><dt>Calendar assessment</dt><dd>{ryanDateStatus(i)}</dd><dt>Customer correspondence</dt><dd>{summary.reply}</dd><dt>Notifications</dt><dd>{summary.notification}</dd></dl>
             <p className="muted">{i.facts.contact_name} · {replyLabel(i)} · date not reserved</p>
-            {i.facts.notes && <pre className="inbox-source">{i.facts.notes}</pre>}
-            {draft?.body && <pre className="inbox-source">{draft.body}</pre>}
+            {i.facts.notes && <details><summary>Event facts and source history</summary><pre className="inbox-source">{i.facts.notes}</pre></details>}
+            {draft?.body && <details><summary>{sent ? "Earlier reply — do not resend" : "Intake reply history"}</summary><pre className="inbox-source">{draft.body}</pre></details>}
             {sent ? <p className="muted">Customer reply already sent by human. Do not send again.</p> : summary.canReview ? (
               <div className="inbox-reply">
                 <button className="button primary" disabled={busy} onClick={() => void review(i, 'reviewed')}>Mark reviewed — keep held</button>

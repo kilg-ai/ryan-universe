@@ -4,10 +4,10 @@ import type {RecordItem} from './lib/model';
 import {heldFor,heldStatus,type HeldKind,type HeldPacket} from './lib/held-work';
 export type HeldSave=(i:Inquiry,kind:HeldKind,input:{owner:string;due:string;body:string;suppressed:boolean;contactReviewed:boolean})=>Promise<boolean>;
 export function HeldWork({inquiry,records,available,onSave,onReview}:{inquiry:Inquiry;records:RecordItem[];available:boolean;onSave:HeldSave;onReview:(i:Inquiry,r:RecordItem,p:HeldPacket)=>Promise<boolean>}) {
- const [kind,setKind]=useState<HeldKind>('contract'),[body,setBody]=useState(''),[owner,setOwner]=useState('Ron'),[due,setDue]=useState(''),[suppressed,setSuppressed]=useState(false),[contactChecked,setContactChecked]=useState(false),[busy,setBusy]=useState(false);
+ const [kind,setKind]=useState<HeldKind>(()=>heldFor(records,inquiry.id,'follow-up').length?'follow-up':'contract'),[body,setBody]=useState(''),[owner,setOwner]=useState('Ron'),[due,setDue]=useState(''),[suppressed,setSuppressed]=useState(false),[contactChecked,setContactChecked]=useState(false),[busy,setBusy]=useState(false);
  const versions=heldFor(records,inquiry.id,kind),latest=versions[0];
  async function save(e:FormEvent){e.preventDefault();setBusy(true);try{if(await onSave(inquiry,kind,{owner,due,body,suppressed,contactReviewed:contactChecked})){setBody('');setContactChecked(false);}}finally{setBusy(false);}}
- return <details className="held-work"><summary>Contracts and follow-ups — held review</summary>
+ return <details className="held-work" open><summary>Contracts and follow-ups — held review</summary>
  <p>Prepare a draft or contract brief for internal review. Nothing here sends, signs, charges or reserves a date.</p>
  {!available&&<p role="status">Shared workspace unavailable. Reconnect before saving review work.</p>}
  <label className="field">Review type<select value={kind} onChange={e=>{setKind(e.target.value as HeldKind);setBody('');setContactChecked(false);}}><option value="contract">Contract draft / brief</option><option value="follow-up">Follow-up draft</option></select></label>
