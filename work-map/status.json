@@ -1,7 +1,18 @@
 {
-  "updatedAt": "2026-09-11T23:36:26.929Z",
-  "release": "Live release verified · operator fit next",
+  "updatedAt": "2026-09-19T01:33:45.2373413Z",
+  "updatedAtMeaning": "Last intentional publish of this snapshot (not page-load time).",
+  "release": "Desk released; current review action clarified; operator acceptance remains open",
   "contact": "ron.kilgore@gmail.com",
+  "caseStudy": {
+    "id": "01",
+    "name": "Ryan the 1 Universe booking desk",
+    "role": "example engagement"
+  },
+  "gates": {
+    "worker": "OFF",
+    "customer_send": "STOP",
+    "calendar_write": "READ_ONLY"
+  },
   "tasks": [
     {
       "id": "01",
@@ -9,6 +20,7 @@
       "status": "complete",
       "lane": "Foundation",
       "owner": "Delivery",
+      "completedAt": "2026-09-11",
       "result": "Website inquiries reach a dedicated desk with a held reply.",
       "proof": "Live intake and existing inquiry verified.",
       "next": "Keep the manual review path operational."
@@ -19,9 +31,10 @@
       "status": "complete",
       "lane": "Daily operation",
       "owner": "Codex",
-      "result": "Owner, calendar evidence, reply state and next action are visible together.",
-      "proof": "Authenticated live desk HTML verified: owner, notification state and next action visible.",
-      "next": "Ryan and Ron confirm the desk is clear in daily use."
+      "completedAt": "2026-09-11",
+      "result": "Today and the booking inbox point to the latest held follow-up; earlier correspondence is collapsed.",
+      "proof": "35 regression checks, production build and synthetic browser navigation passed.",
+      "next": "Ron and Ryan confirm daily usability of the updated desk."
     },
     {
       "id": "03",
@@ -29,8 +42,9 @@
       "status": "complete",
       "lane": "Daily operation",
       "owner": "Codex",
+      "completedAt": "2026-09-11",
       "result": "Explicitly labeled proof inquiries are excluded from the daily display, without deleting their records.",
-      "proof": "Live endpoint now returns one customer inquiry; four explicit test proofs are excluded from the daily display.",
+      "proof": "Live endpoint returns one customer inquiry; labeled proofs excluded.",
       "next": "Keep proof records separate from operator attention."
     },
     {
@@ -39,9 +53,10 @@
       "status": "complete",
       "lane": "Daily operation",
       "owner": "Codex",
+      "completedAt": "2026-09-11",
       "result": "Versioned drafts, review owners and dates; an internal review keeps the work held.",
-      "proof": "Review interface published. Local browser interactions and real shared-record readback passed.",
-      "next": "Complete the signed-in operator fit check; review is not approval to send or sign."
+      "proof": "Review interface published; shared-record readback passed.",
+      "next": "Complete signed-in operator fit; review is not approval to send or sign."
     },
     {
       "id": "05",
@@ -49,6 +64,7 @@
       "status": "complete",
       "lane": "Verification",
       "owner": "Codex",
+      "completedAt": "2026-09-11",
       "result": "One real internal brief was saved and read back with exact text and held state.",
       "proof": "Authenticated shared-workspace readback verified September 11, 2026.",
       "next": "Ron reviews the brief before any terms are proposed."
@@ -59,8 +75,9 @@
       "status": "complete",
       "lane": "Release",
       "owner": "Codex",
+      "completedAt": "2026-09-11",
       "result": "Control Tower UI and booking-desk function released on the existing hosts.",
-      "proof": "Public UI asset verified; authenticated desk returned 200 and unauthorized access returned 401.",
+      "proof": "Public UI asset verified; authenticated desk 200 / unauthorized 401.",
       "next": "Keep worker, customer sending and calendar writes under separate decisions."
     },
     {
@@ -69,9 +86,10 @@
       "status": "complete",
       "lane": "Portfolio",
       "owner": "Codex",
+      "completedAt": "2026-09-11",
       "result": "Public portfolio work map is live, including Ron’s hiring contact.",
       "proof": "Live URL, task filtering and expandable evidence checked in Chrome.",
-      "next": "Use the link in relevant job or client conversations; update the snapshot when work changes."
+      "next": "Update the snapshot only when work changes (publish event)."
     },
     {
       "id": "08",
@@ -79,8 +97,9 @@
       "status": "open",
       "lane": "Verification",
       "owner": "Ron + Ryan",
+      "completedAt": null,
       "result": "An operator should know what needs attention without reading agent logs.",
-      "proof": "Final operator acceptance is still open.",
+      "proof": "Final operator acceptance is still open (desk clarity feedback: better but still muddy).",
       "next": "Use the released desk for a real review and record what is missing."
     },
     {
@@ -89,11 +108,12 @@
       "status": "held",
       "lane": "Separate decisions",
       "owner": "Ron",
+      "completedAt": null,
       "result": "Worker activation, customer sending and calendar writing stay independent decisions.",
       "proof": "All three action gates remain closed.",
       "next": "Authorize only the capability needed for the next business outcome."
     }
   ],
-  "tests": 31,
-  "sourceNote": "Maintained project snapshot. Completed means the stated result is supported by evidence; it does not mean the whole product is finished."
+  "tests": 35,
+  "sourceNote": "Maintained project snapshot. Completed means the stated result is supported by evidence; it does not mean the whole product is finished. updatedAt changes only on intentional publish."
 }
