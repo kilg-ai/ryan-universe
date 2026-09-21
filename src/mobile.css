@@ -1,0 +1,131 @@
+/* Mobile navigation/reflow overrides. Kept separate so the desktop release remains easy to audit. */
+@media (max-width: 900px) {
+  .tower-nav {
+    display: block;
+    min-height: 0;
+    height: auto;
+    position: sticky;
+    top: 0;
+    z-index: 35;
+    overflow: hidden;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tower-nav > .brand,
+  .tower-nav > .sidebar-caption,
+  .tower-nav > .nav-property,
+  .tower-nav > .sidebar-note,
+  .tower-nav > .account {
+    display: none;
+  }
+
+  .tower-nav nav {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    padding: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tower-nav .nav-item {
+    flex: 0 0 auto;
+    width: auto !important;
+    min-height: 44px;
+    margin: 0;
+    padding: 0 12px !important;
+    white-space: nowrap;
+  }
+
+  .tower-nav .nav-count { margin-left: 2px; }
+
+  .topbar {
+    height: auto;
+    min-height: 58px;
+    padding: 10px 16px;
+    gap: 10px;
+  }
+
+  .topbar > div,
+  .top-actions,
+  .breadcrumb { min-width: 0; }
+
+  .breadcrumb {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .breadcrumb strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .preview-badge { display: none; }
+
+  .main-shell { padding: 24px 16px 20px; }
+  .view-heading { align-items: flex-start; flex-direction: column; }
+  .view-heading .button { width: 100%; }
+  h1 { font-size: clamp(32px, 10vw, 42px); }
+
+  .state-strip {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .state-strip > span:first-child { white-space: normal; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats > div { border-bottom: 1px solid var(--border); }
+  .stats > div:nth-child(2n) { border-right: 0; }
+  .today-grid,
+  .work-grid,
+  .youtube-overview { grid-template-columns: minmax(0, 1fr); }
+  .media-grid,
+  .portfolio-grid { grid-template-columns: minmax(0, 1fr); }
+
+  .work-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .tabs-line {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .tabs-line button { flex: 0 0 auto; min-height: 44px; }
+  .search-box { max-width: none; width: 100%; }
+
+  .record-row,
+  .briefing-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .record-row .record-copy,
+  .briefing-row .record-copy { min-width: calc(100% - 60px); }
+  .row-owner { width: auto; margin-left: 49px; text-align: left; }
+  .inbox-summary { align-items: flex-start; flex-direction: column; }
+  .inbox-summary .button { width: 100%; }
+
+  .tower-sheet {
+    max-height: 88dvh;
+    padding-bottom: max(40px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 520px) {
+  .main-shell { padding-inline: 12px; }
+  .topbar { padding-inline: 12px; }
+  .stats { grid-template-columns: 1fr; }
+  .stats > div { border-right: 0; }
+  .section-title { align-items: flex-start; }
+  .work-panel > .section-title,
+  .work-controls,
+  .record-row { padding-left: 16px; padding-right: 16px; }
+  .tags { row-gap: 7px; }
+  .tag { white-space: normal; }
+}
