@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-09-21T00:50:44.6076096Z",
+  "updatedAt": "2026-09-21T19:53:32Z",
   "updatedAtMeaning": "Last intentional publish of this snapshot (not page-load time).",
-  "release": "Desk released; current review action clarified; operator acceptance remains open",
+  "release": "Desk released; mobile navigation/reflow restored; operator acceptance remains open",
   "contact": "ron.kilgore@gmail.com",
   "caseStudy": {
     "id": "01",
@@ -143,8 +143,19 @@
       "owner": "Codex",
       "completedAt": "2026-09-21",
       "result": "Named modal editors, Escape and focus return, setup-step focus, and narrow-panel wrapping fixed.",
-      "proof": "Production build and targeted browser checks passed; new UI asset verified live. Full WCAG and mobile audit remain open.",
-      "next": "Complete the remaining page-level mobile navigation/reflow and accessibility checks."
+      "proof": "Production build and targeted browser checks passed; new UI asset verified live. Full WCAG audit remains open.",
+      "next": "Continue remaining accessibility checks independently of the completed mobile reflow."
+    },
+    {
+      "id": "13",
+      "title": "Restore mobile navigation and page reflow",
+      "status": "complete",
+      "lane": "Operational quality",
+      "owner": "ChatGPT",
+      "completedAt": "2026-09-21",
+      "result": "Navigation remains available below 900px and primary Control Tower layouts reflow for tablet and phone widths.",
+      "proof": "Merged commit c14727e adds a sticky horizontally scrollable mobile nav, 44px navigation/tab touch targets, single-column work/media/portfolio layouts, narrow-phone spacing, and safe-area-aware editor height.",
+      "next": "Keep mobile behavior in regression coverage while completing the remaining accessibility audit."
     }
   ],
   "tests": 35,
