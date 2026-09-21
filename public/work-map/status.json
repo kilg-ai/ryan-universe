@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-21T00:50:44.6076096Z",
+  "updatedAt": "2026-09-21T23:55:38.6073939Z",
   "updatedAtMeaning": "Last intentional publish of this snapshot (not page-load time).",
   "release": "Desk released; current review action clarified; operator acceptance remains open",
   "contact": "ron.kilgore@gmail.com",
@@ -127,13 +127,13 @@
     {
       "id": "11",
       "title": "Verify booking and readiness integrity deployment",
-      "status": "active",
+      "status": "complete",
       "lane": "Operational validation",
       "owner": "Codex",
-      "completedAt": null,
-      "result": "Local integrity tests and production preflight completed; database transaction submitted.",
-      "proof": "Submission was interrupted before result readback. Outcome unverified; do not rerun blindly.",
-      "next": "Read back database constraints, then verify concurrent booking protection with independent PostgreSQL sessions."
+      "completedAt": "2026-09-21",
+      "result": "Database integrity deployed: overlapping bookings are protected and incomplete readiness records are rejected.",
+      "proof": "Independent native database sessions verified commit/reject and rollback/accept behavior. Invalid readiness inserts and updates rejected; valid evidence shape accepted. Test cleanup verified.",
+      "next": "Complete current full-backup recovery and remaining mobile workflow checks. Evidence references still require human truth and completeness review."
     },
     {
       "id": "12",
