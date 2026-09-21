@@ -30,3 +30,9 @@
 .desk-summary{display:grid;grid-template-columns:minmax(100px,150px) minmax(0,1fr);gap:8px 16px}.desk-summary dt{font-weight:700}.desk-summary dd{margin:0;overflow-wrap:anywhere}@media(max-width:540px){.desk-summary{grid-template-columns:1fr;gap:4px}.desk-summary dd{margin-bottom:12px}}
 
 .held-work{border-top:1px solid var(--border,#78836d);margin-top:20px;padding-top:16px}.held-work summary{cursor:pointer;font-weight:700;padding:10px 0}.held-work form{display:grid;gap:12px}.held-work textarea{width:100%;box-sizing:border-box}.held-work button{margin:6px 8px 6px 0}
+/* Native modal reset: retain the existing side-sheet layout in the top layer. */
+dialog.tower-sheet{margin:0 0 0 auto;max-width:none;max-height:none;height:100dvh;color:var(--foreground);border:0;border-left:1px solid var(--border)}
+dialog.tower-sheet::backdrop{background:#0008}
+@media(max-width:900px){dialog.tower-sheet{height:88dvh;border-left:0;border-top:1px solid var(--border)}}
+dialog.tower-sheet fieldset{min-inline-size:0}
+@media(max-width:540px){dialog.tower-sheet .property-picker{grid-template-columns:repeat(2,minmax(0,1fr))}dialog.tower-sheet .property-picker label{min-width:0;overflow-wrap:anywhere}}

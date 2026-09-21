@@ -1,3 +1,4 @@
+import { ModalSheet } from './ModalSheet';
 import { HeldWork, type HeldSave } from './HeldWork';
 import { inquiryAction } from './lib/inquiry-action.ts';
 import { heldFor, makeHeld, heldPayload, heldStatus, readHeld, reviewHeld, type HeldPacket } from './lib/held-work';
@@ -474,27 +475,24 @@ export default function App() {
       </div>
 
       {current && (
-        <div className="tower-sheet" role="dialog">
-          <button className="sheet-dismiss" onClick={() => setSelected(null)}>Close</button>
+        <ModalSheet label="Edit record" onClose={() => setSelected(null)}>
           <RecordEditor item={current} save={send} busy={saveBusy} />
-        </div>
+        </ModalSheet>
       )}
       {add && (
-        <div className="tower-sheet" role="dialog">
-          <button className="sheet-dismiss" onClick={() => setAdd(false)}>Close</button>
+        <ModalSheet label="Add to the Universe" onClose={() => setAdd(false)}>
           <CreateForm defaultProperty={property?.id || 'RyanThe1'} busy={saveBusy} onSave={async (r) => { if (await send({ type: 'createRecord', record: r })) setAdd(false); }} />
-        </div>
+        </ModalSheet>
       )}
       {promptId && (
-        <div className="tower-sheet" role="dialog">
-          <button className="sheet-dismiss" onClick={() => setPromptId(null)}>Close</button>
+        <ModalSheet key={promptId} label="Setup details" onClose={() => setPromptId(null)}>
           <SetupForm key={promptId} id={promptId} answer={state.answers[promptId]?.values} busy={saveBusy} onSave={async (values) => {
             if (await send({ type: 'saveSetup', id: promptId, values })) {
               const i = prompts.findIndex((p) => p.id === promptId);
               setPromptId(prompts[i + 1]?.id || null);
             }
           }} />
-        </div>
+        </ModalSheet>
       )}
       {notice && <output className="toast"><CheckCircle size={18} />{notice}<button aria-label="Dismiss" onClick={() => setNotice('')}>×</button></output>}
     </div>
@@ -528,7 +526,7 @@ function Inbox({ records, sharedAvailable, onSaveHeld, onReviewHeld, inquiries, 
         <p>{ready ? (deskStatus === 'connected' ? `${inquiries.length} live website inquir${inquiries.length === 1 ? 'y' : 'ies'}` : deskBanner(deskStatus)) : 'Opening the booking desk…'}</p>
         <button className="button" onClick={() => void onReload()}>Refresh</button>
       </div>
-      {error && <p className="inbox-alert">{error}</p>}
+      {error && <p className="inbox-alert" role="alert">{error}</p>}
       {inquiries.map((i) => {
         const summary = deskPresentation(i, ryanDateStatus(i));
         const { draft, sent } = summary;
