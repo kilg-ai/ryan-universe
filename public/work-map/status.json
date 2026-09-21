@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T13:13:09.7061723Z",
+  "updatedAt": "2026-09-21T00:50:44.6076096Z",
   "updatedAtMeaning": "Last intentional publish of this snapshot (not page-load time).",
   "release": "Desk released; current review action clarified; operator acceptance remains open",
   "contact": "ron.kilgore@gmail.com",
@@ -134,6 +134,17 @@
       "result": "Local integrity tests and production preflight completed; database transaction submitted.",
       "proof": "Submission was interrupted before result readback. Outcome unverified; do not rerun blindly.",
       "next": "Read back database constraints, then verify concurrent booking protection with independent PostgreSQL sessions."
+    },
+    {
+      "id": "12",
+      "title": "Make editor dialogs keyboard accessible",
+      "status": "complete",
+      "lane": "Operational quality",
+      "owner": "Codex",
+      "completedAt": "2026-09-21",
+      "result": "Named modal editors, Escape and focus return, setup-step focus, and narrow-panel wrapping fixed.",
+      "proof": "Production build and targeted browser checks passed; new UI asset verified live. Full WCAG and mobile audit remain open.",
+      "next": "Complete the remaining page-level mobile navigation/reflow and accessibility checks."
     }
   ],
   "tests": 35,
