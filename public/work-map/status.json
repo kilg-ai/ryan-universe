@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-09-21T23:56:33.7645380Z",
+  "updatedAt": "2026-09-24T08:05:00Z",
   "updatedAtMeaning": "Last intentional publish of this snapshot (not page-load time).",
-  "release": "Desk released; mobile navigation/reflow restored; operator acceptance remains open",
+  "release": "Desk released; mobile navigation/reflow restored; accessibility remediation and current recovery proof remain active",
   "contact": "ron.kilgore@gmail.com",
   "caseStudy": {
     "id": "01",
@@ -156,6 +156,28 @@
       "result": "Navigation remains available below 900px and primary Control Tower layouts reflow for tablet and phone widths.",
       "proof": "Merged commit c14727e adds a sticky horizontally scrollable mobile nav, 44px navigation/tab touch targets, single-column work/media/portfolio layouts, narrow-phone spacing, and safe-area-aware editor height.",
       "next": "Keep mobile behavior in regression coverage while completing the remaining accessibility audit."
+    },
+    {
+      "id": "14",
+      "title": "Finish accessibility state semantics",
+      "status": "open",
+      "lane": "Operational quality",
+      "owner": "ChatGPT",
+      "completedAt": null,
+      "result": "Async notices, shared-workspace errors, work filters, imports and save forms expose their state correctly to assistive technology.",
+      "proof": "GitHub issue #5 bounds five verified gaps in src/App.tsx; remediation is not yet merged.",
+      "next": "Implement issue #5 and close it only after the merged main CI run passes."
+    },
+    {
+      "id": "15",
+      "title": "Prove current production recovery",
+      "status": "open",
+      "lane": "Recovery",
+      "owner": "Delivery",
+      "completedAt": null,
+      "result": "A current full production backup restores cleanly with relationships and critical operational data intact.",
+      "proof": "Historical restore proof exists, but no current full-backup clean-host restore has been recorded.",
+      "next": "Create a current full backup, restore it in isolation, verify counts/relationships and record the evidence."
     }
   ],
   "tests": 35,
